@@ -1012,6 +1012,8 @@
 		            	</div>
 		            </section>
 				</main>
+
+				<?php require_once("./footer.php"); ?>
 			</div>
 		</div>
 	</div>
