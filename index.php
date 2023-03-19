@@ -35,7 +35,9 @@
 <body>
 	<div class="page-wrapper">
 		<div class="container page-container">
+
 			<?php require_once("./header.php"); ?>
+			
 			<div class="page-content-div">
 				<main class="main">
 					<section class="slider">
