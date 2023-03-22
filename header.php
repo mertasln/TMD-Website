@@ -18,9 +18,6 @@
         </div><!-- End .header-search -->
     </div>
 
-    <div class="header-center text-center">
-        <p>Free Delivery For Members</p>
-    </div>
 
     <div class="header-right">
         <div class="account">
@@ -469,16 +466,7 @@
                 </ul><!-- End .menu -->
             </nav><!-- End .main-nav -->
         </div>
-        <div class="header-bottom">
-                <div class="social-icons">
-                <a href="www.facebook.com/tmdreamfurniture" class="social-icon facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                <a href="#" class="social-icon twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                <a href="www.instagram.com/tmdreamfurniture" class="social-icon instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                <a href="#" class="social-icon youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                <a href="#" class="social-icon pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-            </div><!-- End .soial-icons -->
-            <p class="footer-copyright">Copyright © 2019 Molla Store.<br>All Rights Reserved.</p>
-        </div>
+        
     </div>
 </div>
 
