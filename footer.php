@@ -3,7 +3,7 @@
     <section class="subscribe">
         <div class="heading">
             <h3 class="heading-title">Get The Latest Deals</h3>
-            <p class="heading-cat">and receive $20 coupon for first shopping</p>
+            <p class="heading-cat">and receive $100 coupon for first shopping</p>
         </div>
         <form action="#">
             <div class="input-group">

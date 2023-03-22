@@ -1,3 +1,4 @@
+
 <div class="header sticky-header">
     <div class="header-left">
         <button class="mobile-menu-toggler">
@@ -5,11 +6,12 @@
             <i class="icon-bars"></i>
         </button>
         
+        
         <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
             <form action="#" method="get">
                 <div class="header-search-wrapper search-wrapper-wide">
                     <label for="q" class="sr-only">Search</label>
-                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product..." required>
+                    <input type="search" class="form-control" name="q" id="q" placeholder="Search our products..." required>
                     <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
                 </div><!-- End .header-search-wrapper -->
             </form>
@@ -104,7 +106,7 @@
     <div class="header sidebar">
         <div class="header-top">
             <a href="index.html" class="logo">
-                <img src="assets/images/demos/demo-23/logo.png" alt="OLLA Logo" width="100" height="20">
+                <img src="assets/images/demos/demo-23/logotmd1.png" alt="TMD  Logo " width="150" height="40">
             </a>
         </div>
         <div class="header-main">
@@ -448,7 +450,7 @@
                                 <ul>
                                     <li><a href="elements-products.html">Products</a></li>
                                     <li><a href="elements-typography.html">Typography</a></li>
-                                    <li><a href="elements-titles.html">Titles</a></li>
+                                    <li><a href="elements-titles.html">Titles</a></li>searc
                                     <li><a href="elements-banners.html">Banners</a></li>
                                     <li><a href="elements-product-category.html">Product Category</a></li>
                                     <li><a href="elements-video-banners.html">Video Banners</a></li>
@@ -469,9 +471,9 @@
         </div>
         <div class="header-bottom">
                 <div class="social-icons">
-                <a href="#" class="social-icon facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                <a href="www.facebook.com/tmdreamfurniture" class="social-icon facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
                 <a href="#" class="social-icon twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                <a href="#" class="social-icon instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                <a href="www.instagram.com/tmdreamfurniture" class="social-icon instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
                 <a href="#" class="social-icon youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
                 <a href="#" class="social-icon pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
             </div><!-- End .soial-icons -->
