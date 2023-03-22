@@ -41,7 +41,6 @@
 			<div class="page-content-div">
 				<main class="main">
 					<section class="slider">
-						<div class="intro-slider-container mb-3">
 			                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" 
 			                    data-owl-options='{
 			                        "dots": true,
@@ -55,24 +54,16 @@
 			                        }
 			                    }'>
 			                    <div>
-			                    	<div class="intro-slide" style="background-image: url(assets/images/demos/demo-23/slider/slide.jpg);">
-				                        <div class="intro">
-				                        	<div class="title">
-				                        		<h3>End of Season Sale</h3>
-				                        	</div>
-				                        	<div class="content">
-				                        		<h4>Save 40% off</h4>
-				                        	</div>
-				                        	<div class="action">
-				                        		<a href="category.html">discover now</a>
-				                        	</div>
-				                        </div>
-				                    </div><!-- End .intro-slide -->
+			                    	<div class="intro-slide">
+									<video width="1480" autoplay muted loop playsline class="hide-sm">
+										<source src="assets/images/video/video.mp4.mp4" type="video/mp4"
+									video><!-- End .intro-slide -->
+									
 			                    </div>
 			                    
-			                </div><!-- End .intro-slider owl-carousel owl-simple -->
+			                <!-- End .intro-slider owl-carousel owl-simple -->
 
-			                <span class="slider-loader"></span><!-- End .slider-loader -->
+			                <!-- End .slider-loader -->
 			            </div><!-- End .intro-slider-container -->
 					</section>
 					<section class="container service">
@@ -973,7 +964,7 @@
 		            <section class="instagram">
 		            	<div class="heading">
 		            		<h3 class="heading-title">Shop by Instagram</h3>
-		            		<p class="heading-cat">@Molla Instagram</p>
+		            		<p class="heading-cat">@TMD Instagram</p>
 		            	</div>
 		            	<div class="instagram-images">
 		            		<div class="col-xl-5col col-md-3 col-sm-4 col-6 instagram-feed">
