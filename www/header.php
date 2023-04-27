@@ -112,7 +112,7 @@
                     <li class="megamenu-container active">
                         <a href="index.html" class="sf-with-ul">Home</a>
 
-                        <div class="megamenu demo left">
+                        <div class="megamenu demo left" style="left:250px !important;">
                             <div class="menu-col">
                                 <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
