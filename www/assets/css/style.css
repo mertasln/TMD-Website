@@ -16867,8 +16867,5 @@ button:focus {
 /* '' */
 
 /*# sourceMappingURL=style.css.map */
-@media only screen and (min-width: 1024px){
-.header.sidebar .menu .megamenu {
-  left: 250px !important;
-}
-}
+
+
