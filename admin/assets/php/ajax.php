@@ -22,25 +22,24 @@ if(!isset($_SESSION["user_id"])){
                 FROM products
                 WHERE products.view = 1;";
             $res = mysqli_query($con, $sql);
-            $row = mysqli_fetch_assoc($res);
-            $count_total = $row["count_total"];
+            $row = $res ? mysqli_fetch_assoc($res) : null;
+            $count_total = $row["count_total"] ?? 0;
             $count_total_filtered = $count_total;
 
-            // check if search is set and update query
-            $query = "WHERE products.view = 1 AND products.idpc = product_categories.id";
+            $query = "WHERE products.view = 1";
             if(!empty($_POST["search"]["value"])){
                 $q = explode(" ", $_POST["search"]["value"]);
                 for ($i=0; $i < count($q); $i++) { 
-                    // add spaces between items if you want to ignore `motors` that finds a `motor seat`
-                    $query .= " AND CONCAT(product_categories.name, products.title, products.size, products.manufacturer, products.code, products.price, products.stock, products.pack_amount) LIKE '%".$q[$i]."%'";
+                    $safe_q = mysqli_real_escape_string($con, $q[$i]);
+                    $query .= " AND CONCAT(IFNULL(product_categories.name, ''), ' ', IFNULL(products.title, ''), ' ', IFNULL(products.code, ''), ' ', IFNULL(products.price, ''), ' ', IFNULL(products.stock, '')) LIKE '%".$safe_q."%'";
                 }
                 $sql = 
                     "SELECT COUNT(*) AS count_total
-                    FROM products, product_categories
+                    FROM products LEFT JOIN product_categories ON products.idpc = product_categories.id
                     ".$query.";";
                 $res = mysqli_query($con, $sql);
-                $row = mysqli_fetch_assoc($res);
-                $count_total_filtered = $row["count_total"];
+                $row = $res ? mysqli_fetch_assoc($res) : null;
+                $count_total_filtered = $row["count_total"] ?? 0;
             }
 
             // check if order is set and update query
@@ -51,45 +50,57 @@ if(!isset($_SESSION["user_id"])){
                 "products.price",
                 "products.stock",
             ];
-            if(!empty($_POST["order"])){
+            if(!empty($_POST["order"]) && is_array($_POST["order"])){
                 $o = $_POST["order"];
                 $order = [];
                 for ($i=0; $i < count($o); $i++) { 
-                    $order[] = $map[$o[$i]["column"]]." ".strtoupper($o[$i]["dir"]);
+                    $col_idx = (int)$o[$i]["column"];
+                    $dir = strtoupper($o[$i]["dir"]) === 'DESC' ? 'DESC' : 'ASC';
+                    if(isset($map[$col_idx])){
+                        $order[] = $map[$col_idx]." ".$dir;
+                    }
                 }
-                $query .= " ORDER BY ".implode(", ", $order);
+                if(!empty($order)){
+                    $query .= " ORDER BY ".implode(", ", $order);
+                }
             }
+
+            $length = isset($_POST["length"]) ? (int)$_POST["length"] : 10;
+            $start = isset($_POST["start"]) ? (int)$_POST["start"] : 0;
+            $limit_sql = $length >= 0 ? " LIMIT $length OFFSET $start" : "";
 
             // get all data
             $sql = 
-                "SELECT product_categories.name, products.id, products.title, products.size, products.manufacturer, products.code, products.price, products.stock, products.pack_amount
-                FROM products, product_categories
+                "SELECT product_categories.name AS category_name, products.id, products.title, products.code, products.price, products.stock
+                FROM products LEFT JOIN product_categories ON products.idpc = product_categories.id
                 ".$query."
-                LIMIT ".$_POST["length"]."
-                OFFSET ".$_POST["start"].";";
+                ".$limit_sql.";";
             $res = mysqli_query($con, $sql);
             $r = [];
             // loop thru all data and format if needed
-            while($row = mysqli_fetch_assoc($res)){
-                $btns = 
-                    '<div class="dropdown show">
-                        <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink'.$row["id"].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs text-dark"></i></a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink'.$row["id"].'">
-                            <a class="btn btn-primary w-100" href="?view='.$row["id"].'">Bekijken <i class="fa fa-search"></i></a>
-                            <a class="btn btn-warning w-100 mt-1" href="?edit='.$row["id"].'">Bewerken <i class="fa fa-pencil-alt"></i></a>
-                            <a class="btn btn-danger w-100 mt-1" href="?delete='.$row["id"].'">Verwijderen <i class="fa fa-trash"></i></a>                        
-                        </div>
-                    </div>';
-                // store all data in a variable
-                $r[] = [
-                    "category_name" => $row["name"],
-                    "title" => $row["title"],
-                    "code" => $row["code"],
-                    "price" => $row["price"],
-                    "stock" => $row["stock"],
-                    "btns" => $btns
-                ];
-            }  
+            if($res){
+                while($row = mysqli_fetch_assoc($res)){
+                    $btns =
+                        '<div class="dropdown show">
+                            <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink'.$row["id"].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i> Acties</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink'.$row["id"].'">
+                                <a class="dropdown-item" href="?view='.$row["id"].'"><i class="fa fa-eye text-info mr-2"></i> Bekijken</a>
+                                <a class="dropdown-item" href="?edit='.$row["id"].'"><i class="fa fa-pencil-alt text-warning mr-2"></i> Bewerken</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="?delete='.$row["id"].'"><i class="fa fa-trash mr-2"></i> Verwijderen</a>
+                            </div>
+                        </div>';
+                    // store all data in a variable
+                    $r[] = [
+                        "category_name" => $row["category_name"] ?? "-",
+                        "title" => $row["title"] ?? "-",
+                        "code" => $row["code"] ?? "-",
+                        "price" => "€ ".number_format((float)($row["price"] ?? 0), 2, ",", "."),
+                        "stock" => $row["stock"] ?? "0",
+                        "btns" => $btns
+                    ];
+                }
+            }
 
             // return all data
             print_r(json_encode([

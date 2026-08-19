@@ -7,21 +7,21 @@ $errors = [];
 
 if(isset($_POST["add"])){
     // get variables
-    $idpc = $_POST["idpc"];
-    $idps = $_POST["idps"];
-    $title = mysqli_real_escape_string($con, $_POST["title"]);
-    $description = $_POST["description"];
-    $code = mysqli_real_escape_string($con, $_POST["code"]);
-    $price = mysqli_real_escape_string($con, $_POST["price"]);
-    $stock = mysqli_real_escape_string($con, $_POST["stock"]);
-    $spec_names = $_POST["spec_names"];
-    $spec_values = $_POST["spec_values"];
+    $idpc = mysqli_real_escape_string($con, $_POST["idpc"] ?? '');
+    $idps = !empty($_POST["idps"]) ? "'".mysqli_real_escape_string($con, $_POST["idps"])."'" : "NULL";
+    $title = mysqli_real_escape_string($con, $_POST["title"] ?? '');
+    $description = mysqli_real_escape_string($con, $_POST["description"] ?? '');
+    $code = mysqli_real_escape_string($con, $_POST["code"] ?? '');
+    $price = mysqli_real_escape_string($con, $_POST["price"] ?? '0');
+    $stock = mysqli_real_escape_string($con, $_POST["stock"] ?? '0');
+    $spec_names = $_POST["spec_names"] ?? [];
+    $spec_values = $_POST["spec_values"] ?? [];
 
     if(!file_exists("../www/products/".dclean($title)."")){
         // add product to database
         $sql = 
             "INSERT INTO products (`idpc`, `idps`, `title`, `description`, `code`, `price`, `stock`) 
-                VALUES ('$idpc', '$idps', '$title', '$description', '$code', '$price', '$stock');";
+                VALUES ('$idpc', $idps, '$title', '$description', '$code', '$price', '$stock');";
         if(!mysqli_query($con, $sql)){
             $errors[] = "SQL error: ".mysqli_error($con);
         }
@@ -31,8 +31,8 @@ if(isset($_POST["add"])){
 
         // add product_specs
         for ($i=0; $i < count($spec_names); $i++) { 
-            $spec_name = $spec_names[$i];
-            $spec_value = $spec_values[$i];
+            $spec_name = mysqli_real_escape_string($con, $spec_names[$i]);
+            $spec_value = mysqli_real_escape_string($con, $spec_values[$i] ?? '');
             if(!empty($spec_name) && !empty($spec_value)){
                 $sql = 
                     "INSERT INTO product_specs (`idp`, `name`, `value`)
@@ -151,18 +151,18 @@ if(isset($_POST["add"])){
             </div>
         </div>';
 }elseif(isset($_POST["edit"])){
-    $idp = $_POST["edit"];
-    $idpc = $_POST["idpc"];
-    $idps = !empty($_POST["idps"]) ? $_POST["idps"] : "";
+    $idp = mysqli_real_escape_string($con, $_POST["edit"]);
+    $idpc = mysqli_real_escape_string($con, $_POST["idpc"] ?? '');
+    $idps = !empty($_POST["idps"]) ? "'".mysqli_real_escape_string($con, $_POST["idps"])."'" : "NULL";
 
     // get variables
-    $title = mysqli_real_escape_string($con, $_POST["title"]);
-    $description = $_POST["description"];
-    $code = mysqli_real_escape_string($con, $_POST["code"]);
-    $price = mysqli_real_escape_string($con, $_POST["price"]);
-    $stock = mysqli_real_escape_string($con, $_POST["stock"]);
-    $spec_names = $_POST["spec_names"];
-    $spec_values = $_POST["spec_values"];
+    $title = mysqli_real_escape_string($con, $_POST["title"] ?? '');
+    $description = mysqli_real_escape_string($con, $_POST["description"] ?? '');
+    $code = mysqli_real_escape_string($con, $_POST["code"] ?? '');
+    $price = mysqli_real_escape_string($con, $_POST["price"] ?? '0');
+    $stock = mysqli_real_escape_string($con, $_POST["stock"] ?? '0');
+    $spec_names = $_POST["spec_names"] ?? [];
+    $spec_values = $_POST["spec_values"] ?? [];
 
     // get old name
     $sql = 
@@ -170,15 +170,17 @@ if(isset($_POST["add"])){
         FROM products
         WHERE products.id  = '$idp';";
     $res = mysqli_query($con, $sql);
-    $row = mysqli_fetch_assoc($res);
-    $oldname = $row["title"];
+    $row = $res ? mysqli_fetch_assoc($res) : null;
+    $oldname = $row["title"] ?? "";
 
     if(!file_exists("../www/products/".dclean($title)."/") || $oldname == $title){
-        rename("../www/products/".dclean($oldname), "../www/products/".dclean($title));
+        if(!empty($oldname) && file_exists("../www/products/".dclean($oldname))){
+            rename("../www/products/".dclean($oldname), "../www/products/".dclean($title));
+        }
         $sql = 
             "UPDATE products
             SET `idpc` = '$idpc',
-                `idps` = '$idps',
+                `idps` = $idps,
                 `title` = '$title',
                 `description` = '$description',
                 `code` = '$code',
@@ -196,13 +198,15 @@ if(isset($_POST["add"])){
         }
         // then add product_specs
         for ($i=0; $i < count($spec_names); $i++) { 
-            $spec_name = $spec_names[$i];
-            $spec_value = $spec_values[$i];
+            $spec_name = mysqli_real_escape_string($con, $spec_names[$i]);
+            $spec_value = mysqli_real_escape_string($con, $spec_values[$i] ?? '');
             if(!empty($spec_name) && !empty($spec_value)){
-                $sql = 
+                $sql_spec =
                     "INSERT INTO product_specs (`idp`, `name`, `value`)
                         VALUES ('$idp', '$spec_name', '$spec_value');";
-                mysqli_query($con, $sql);
+                if(!mysqli_query($con, $sql_spec)){
+                    $errors[] = mysqli_error($con);
+                }
             }
         }
 
@@ -513,9 +517,9 @@ if(isset($_POST["add"])){
         WHERE product_specs.idp = '$idp';";
     $res = mysqli_query($con, $sql);
     while($row = mysqli_fetch_assoc($res)){
-        $name = htmlentities($row["name"], ENT_QUOTES);
-        $value = htmlentities($row["value"], ENT_QUOTES);
-        $js .= 'addRowSpecs("'.$name.'", "'.$value.'");';
+        $name = $row["name"];
+        $value = $row["value"];
+        $js .= 'addRowSpecs('.json_encode($name).', '.json_encode($value).');';
     }
     
     $js .= 

@@ -36,8 +36,14 @@ if(isset($_POST["submit"])){
     <!-- CSS Vendor start -->
     <link rel="stylesheet" type="text/css" href="./assets/css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/atmos.min.css">                           <!-- Bootstrap + Admin CSS -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,600">       <!--Google Font-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <!-- CSS Vendor end -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; }
+        .login-card { border-radius: 16px; border: none; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2); }
+        .btn-primary-custom { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; font-weight: 600; border-radius: 10px; }
+        .btn-primary-custom:hover { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); }
+    </style>
 
     <!-- CSS start -->
     <link rel="stylesheet" type="text/css" href="./assets/css/pace.css">
@@ -47,43 +53,48 @@ if(isset($_POST["submit"])){
     <!-- CSS end -->
 
 </head>
-<body class="jumbo-page">
+<body>
 
-<main class="admin-main  ">
-    <div class="container-fluid">
-        <div class="row ">
-            <div class="col-lg-4  bg-white">
-                <div class="row align-items-center m-h-100">
-                    <div class="mx-auto col-md-8">
-                        <div class="p-b-20 text-center">
-                            <p>
-                                <img src="./assets/img/logo.png" width="240" alt="Logo MSK Stores">
-                            </p>
-                            <p class="admin-brand-content">
-                            </p>
-                        </div>
-                        <h3 class="text-center p-b-20 fw-400">Inloggen</h3>
-                        <form class="needs-validation" method="post">
-                            <div class="form-row">
-                                <div class="form-group floating-label col-md-12">
-                                    <label for="username">Uw gebruikersnaam</label>
-                                    <input type="text" required class="form-control" placeholder="Uw gebruikersnaam" name="username" id="username">
-                                </div>
-                                <div class="form-group floating-label col-md-12">
-                                    <label for="password">Uw wachtwoord</label>
-                                    <input type="password" name="password" placeholder="Uw wachtwoord" required class="form-control " id="password">
-                                </div>
-                            </div>
-
-                            <button type="submit" name="submit" class="btn btn-danger btn-block btn-lg">Inloggen</button>
-
-                        </form>
+<main class="admin-main d-flex align-items-center justify-content-center min-vh-100 py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card login-card bg-white p-4 p-sm-5">
+                    <div class="text-center mb-4">
+                        <div class="h2 font-weight-bold text-primary mb-2"><i class="fa fa-store mr-2"></i>MSK STORES</div>
+                        <h4 class="font-weight-bold text-dark">Beheerderspaneel</h4>
+                        <p class="text-muted small">Meld u aan om toegang te krijgen tot het dashboard</p>
                     </div>
 
-                </div>
-            </div>
-            <div class="col-lg-8 d-none d-md-block bg-cover" style="background-image: url('./assets/img/bg-login.jpg');">
+                    <form class="needs-validation" method="post">
+                        <div class="form-group mb-3">
+                            <label for="username" class="font-weight-medium text-dark">Gebruikersnaam</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-light border-right-0"><i class="fa fa-user text-muted"></i></span>
+                                </div>
+                                <input type="text" required class="form-control border-left-0" placeholder="Vul uw gebruikersnaam in" name="username" id="username">
+                            </div>
+                        </div>
 
+                        <div class="form-group mb-4">
+                            <label for="password" class="font-weight-medium text-dark">Wachtwoord</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-light border-right-0"><i class="fa fa-lock text-muted"></i></span>
+                                </div>
+                                <input type="password" name="password" placeholder="Vul uw wachtwoord in" required class="form-control border-left-0" id="password">
+                            </div>
+                        </div>
+
+                        <button type="submit" name="submit" class="btn btn-primary-custom text-white btn-block btn-lg py-3 shadow-sm mb-3">
+                            <i class="fa fa-sign-in-alt mr-2"></i> Inloggen
+                        </button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">&copy; <?php echo date("Y"); ?> MSK Stores. Alle rechten voorbehouden.</small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
